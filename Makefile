@@ -86,3 +86,10 @@ irix:
 	(cd libvogl; 	$(MAKE) $(MFLAGS) irix5)
 	(cd gophervr; 	cp Imakefile.sgi Imakefile; xmkmf && $(MAKE) $(MFLAGS))
 
+macosx-arm64:
+	@echo "Building GopherVR for macOS arm64 (XQuartz)..."
+	(cd gopher/object ; $(MAKE) all CC=clang OPT="-O2 -Wall -Wno-implicit-function-declaration -Wno-return-type -Wno-int-conversion -Wno-incompatible-pointer-types" )
+	(cd libtracker; $(MAKE) $(MFLAGS) MACHINE=osx-arm64 CC=clang)
+	(cd libvogl; 	$(MAKE) $(MFLAGS) macosx-arm64)
+	(cd gophervr; 	cp Makefile.macosx-arm64 Makefile ; $(MAKE) $(MFLAGS))
+

@@ -26,27 +26,7 @@
 
 #include <X11/Intrinsic.h>
 
-void makeErrorDialog(
-#ifdef PROTO
-	Widget		/* top */
-#endif
-);
-
-void displayError(
-#ifdef PROTO
-	char *,		/* errorText */
-	int		/* fatal */
-#endif
-);
-
-void makeInfoDialog(
-#ifdef PROTO
-	Widget		/* top */
-#endif
-);
-
-void displayInfo(
-#ifdef PROTO
-	char *		/* infoText */
-#endif
-);
+void makeErrorDialog(Widget top);
+void displayError(char *errorText, int fatal);
+void makeInfoDialog(Widget top);
+void displayInfo(char *infoText);

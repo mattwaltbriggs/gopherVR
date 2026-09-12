@@ -357,7 +357,7 @@
 
 #include "String.h"
 #include "STRstring.h"
-#include "Regex.h"
+#include "GRegex.h"
 #include <stdio.h>
 #include "compatible.h"
 #include <errno.h>

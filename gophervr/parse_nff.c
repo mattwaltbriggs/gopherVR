@@ -181,7 +181,7 @@ ParseNFFDone(void)
  *
  *	Read in the viewing parameters
  */
-read_view()
+void read_view(void)
 {
 /*     read_three("\nfrom %g %g %g", &view.Fx, &view.Fy, &view.Fz);
      read_three("\nat %g %g %g", &view.Ax, &view.Ay, &view.Az);

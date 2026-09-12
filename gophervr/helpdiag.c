@@ -81,7 +81,7 @@ V_HelpWin( Widget w, XtPointer client_data, XtPointer call_data )
     int			  width, height;
     Position	  x, y;
     XmString      slabel_ht, slabel_hd, slabel_sh, sdismiss;
-    void          add_item(), search_item(), sel_callback(), close_help();
+    void          add_item(Widget, char*), search_item(Widget, XtPointer, XtPointer), sel_callback(Widget, XtPointer, XtPointer), close_help(Widget, XtPointer, XtPointer);
 
     /* create PopUpshell */
     
@@ -290,7 +290,7 @@ add_item( Widget list_w, char *newtext )
 
 
 #if !defined(SYSV) || defined(_AIX)
-    extern char *re_comp();
+    extern char *re_comp(char *);
 #endif /* SYSV */
 
 

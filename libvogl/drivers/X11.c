@@ -8,6 +8,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <unistd.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <stdlib.h>
@@ -183,7 +185,7 @@ static void UsePrivateColormap()
      static unsigned long    s_rl_plane_mask [MAX_PLANES];
      XColor		Xcl_tmp;
      XSetWindowAttributes swa;
-     static cmap_atom= None;
+     static Atom cmap_atom= None;
 
      Colormap defcolormap = DefaultColormap(display, screen);
 
@@ -558,7 +560,7 @@ X11_init( void )
      if (vdevice.wintitle)
 	  strcpy(name, vdevice.wintitle);
      else
-	  sprintf(name, "%s %d (win id 0x%x)", me, getpid(), winder);
+          sprintf(name, "%s %d (win id 0x%lx)", me, getpid(), (unsigned long)winder);
      
      XSetStandardProperties(display,
 			    winder,
@@ -1019,7 +1021,7 @@ X11_string(char s[])
  *	fill a polygon
  */
 void
-X11_fill(register const int n, const int x[], const int y[])
+X11_fill(int n, int x[], int y[])
 {
 	XPoint	plist[20];
 	register int	i;

@@ -21,7 +21,7 @@ void X11_mapcolor(int i, int r, int g, int b);
 int  X11_font( char *fontfile);
 void X11_char(char c);
 void X11_string(char s[]);
-void X11_fill(register const int n, const int x[], const int y[]);
+void X11_fill(int n, int x[], int y[]);
 int  X11_backbuf( void );
 int  X11_swapbuf( void );
 void X11_frontbuf( void );

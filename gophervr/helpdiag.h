@@ -4,10 +4,10 @@
 
 
 void V_HelpWin( Widget w, XtPointer client_data, XtPointer call_data );
-void V_ScanHelpFile();
-void V_TwoPercents1();
-void V_GetTopicName();
-void V_GetTopicBody();
+void V_ScanHelpFile(void);
+void V_TwoPercents1(void);
+void V_GetTopicName(void);
+void V_GetTopicBody(void);
 void V_TwoPercents2( char rCh_desc[], int *irCh_index );
 void V_AddToTopicList( char *aCh_topic, int cCh_len );
 void V_AddToTopicBodyList( char *aCh_desc, int cCh_len );

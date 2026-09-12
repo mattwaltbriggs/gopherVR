@@ -26,6 +26,8 @@
 
 extern  Widget  top;
 
+void showError(char *parm);
+
 #define	PERCENT	'%'
 
 typedef struct _textElement {
@@ -529,11 +531,7 @@ fprintf(stderr, "continuing on\n");
  */
 
 void
-displayIndexTempFile(topLevel, title, fileName, indexString)
-  Widget	topLevel;
-  char	*title;
-  char	*fileName;
-  char	*indexString;
+displayIndexTempFile(Widget topLevel, char *title, char *fileName, char *indexString)
 {
      Cardinal	n;
      char		*textFileName;
@@ -584,10 +582,7 @@ displayIndexTempFile(topLevel, title, fileName, indexString)
    Load a text popup with the contents of a text string */
 
 void
-displayTextString(topLevel, title, string)
-  Widget	topLevel;
-  char	*title;
-  char	*string;
+displayTextString(Widget topLevel, char *title, char *string)
 {
      textElementP	tep;
 
@@ -619,8 +614,7 @@ displayTextString(topLevel, title, string)
 }
 
 
-showError(parm)
-  char *parm;
+void showError(char *parm)
 {
      fprintf(stderr, "%s\n", parm);
 }
@@ -667,7 +661,7 @@ V_FileSelDiag( Widget Wig_diag, XtPointer client_data, XtPointer call_data )
 {
     Widget dialog, Wig_filetxt, Wig_filtxt;
 	textElementP   tep = (textElementP) client_data;
-    extern void exit();
+    extern void exit(int);
     Arg args[5];
     int n = 0;
 
@@ -780,7 +774,7 @@ do_search( Widget widget, XtPointer search_data )
     char          *mask, buf[BUFSIZ], *p;
     XmString       names[500]; /* maximum of 500 files in dir */
     int            i = 0;
-    FILE          *pp, *popen();
+    FILE          *pp;
     XmFileSelectionBoxCallbackStruct *cbs = 
         (XmFileSelectionBoxCallbackStruct *) search_data;
 

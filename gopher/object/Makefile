@@ -5,12 +5,12 @@ top_srcdir = ..
 include ../Makefile.config
 
 
-CCFLAGS	= $(OPT) -force_cpusubtype_ALL -mmacosx-version-min=10.4 -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk $(INTLOPTS) $(DEBUGGING) $(WAISTYPE) $(SOCKSFLAGS) -I.. -I$(srcdir)  -I$(top_srcdir) 
+CCFLAGS	= $(OPT) $(INTLOPTS) $(DEBUGGING) $(WAISTYPE) $(SOCKSFLAGS) -I.. -I$(srcdir)  -I$(top_srcdir) 
 
 OBJS	= STRstring.o GDgopherdir.o GSgopherobj.o \
 	  DAarray.o   VIews.o       BLblock.o \
 	  Sockets.o   util.o        compatible.o \
-	  url.o       Debug.o       Regex.o \
+	  url.o       Debug.o       GRegex.o \
 	  fileio.o    Locale.o      RBTree.o
 
 

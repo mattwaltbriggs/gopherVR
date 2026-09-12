@@ -162,6 +162,11 @@ LIBS_osx = -lm -L/usr/X11R6/lib -lX11
 AUDIODIR_osx = dummy/
 CONFIG_osx = dummy/
 
+CFLAGS_osx-arm64 = -O2 -I/opt/X11/include -I/opt/homebrew/include -Wno-implicit-int -Wno-implicit-function-declaration -Wno-deprecated-non-prototype -Wno-parentheses -Wno-incompatible-function-pointer-types
+LIBS_osx-arm64 = -lm -L/opt/X11/lib -L/opt/homebrew/lib -lX11
+AUDIODIR_osx-arm64 = dummy/
+CONFIG_osx-arm64 = dummy/
+
 CFLAGS_SVR4 = -O -I/usr/X/include
 LIBS_SVR4 = -L/usr/X/lib $(LIBS_NAS) -lsocket -lnsl -lc /usr/ucblib/libucb.a
 AUDIODIR_SVR4 = $(AUDIODIR_NAS)

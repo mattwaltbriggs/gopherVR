@@ -28,8 +28,8 @@ static int          iLevel =0;
  * Display a scene given a GopherDirObj, assumes that everything has
  * been initialized
  */
-extern int BusyUpdate();
-extern void	V_DestroyHistoryData();	
+extern int BusyUpdate(void);
+extern void	V_DestroyHistoryData(void);	
 
 static void
 pushgopher(GopherDirObj *ZeDir)
@@ -56,7 +56,7 @@ popgopher(GopherDirObj **ZeDir)
 
 
 static int 
-gmoo()
+gmoo(void)
 {
      printf("Got stuff\n");
 }
@@ -510,7 +510,7 @@ Load_Index_or_Dir(GopherObj *ZeGopher, GopherDirObj *newdir,
      return(failed);
 }
 
-extern void drawscene();
+extern void drawscene(void);
 void
 JumpOutofView(void (*displayfunc)(),
 	     float Moveup, float seconds);
@@ -968,7 +968,8 @@ GSGetAbstractblock( GopherObj *gs, char **aCh_abs )
 }
 
 
-V_AfterHistory()
+void
+V_AfterHistory(void)
 {
 	RenderGophers(CurrentDir, FALSE);
 }
@@ -1090,16 +1091,16 @@ ChoiceToString(int choice, int which)
 }
 
 void
-ReloadCurrentDir()
+ReloadCurrentDir(void)
 {
 	  RenderGophers(CurrentDir, FALSE);
 }
 
-extern void V_GenMenuListWin();
+extern void V_GenMenuListWin(void);
 extern void V_AddStringToList(char *s, int indent);
 
 void
-MenuShowGopherMenu()
+MenuShowGopherMenu(void)
 {
 	int i, numobjects, BlockResult;
 	GopherObj *gs = NULL;

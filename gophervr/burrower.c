@@ -1,8 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <locale.h>
 #include <sys/time.h>
+#include <mach-o/dyld.h>
 
 /* this should really be a preference setting, based on magnitude. */
 #define FPS_MAGNITUDE 30000
@@ -79,16 +81,16 @@ struct timeval dubblbubbl;
 int clickmaybe = 0;
 int	vinited = 0;
 
-void		drawscene();
-void ResetFps();
+void		drawscene(void);
+void ResetFps(void);
 void    jumpto(int x, int y);
-void    Afoo()
+void    Afoo(void)
 {
      ;
 }
-void    mousemove_cb();
-void    mouserotate_cb();
-void    mouseselect();
+void    mousemove_cb(Widget widget, XEvent *event, String *args, int *num_args);
+void    mouserotate_cb(Widget widget, XEvent *event, String *args, int *num_args);
+void    mouseselect(Widget widget, XEvent *event, String *args, int *num_args);
 
 /************* Some CallBacks... *****************/
 
@@ -153,7 +155,7 @@ deathofgopher(Widget  widget, XtPointer   client_data, XtPointer cbs)
 	}
 }
 
-resize()
+void resize(void)
 {
      Dimension       w, h;
      Arg             arg[2];
@@ -173,7 +175,7 @@ resize()
 }
 
 void
-repaint()
+repaint(Widget w, XtPointer client_data, XtPointer call_data)
 {
      drawscene();
 }
@@ -187,10 +189,7 @@ repaint()
  */
 
 void 
-Rotate_CB(widget, client_data, call_data)
-  Widget    widget;
-  XtPointer client_data;
-  XtPointer call_data;
+Rotate_CB(Widget widget, XtPointer client_data, XtPointer call_data)
 {
      register float incr;
      int keepgoing;
@@ -237,10 +236,7 @@ Rotate_CB(widget, client_data, call_data)
  */
 
 void 
-Move_CB(widget, client_data, call_data)
-  Widget    widget;
-  XtPointer client_data;
-  XtPointer call_data;
+Move_CB(Widget widget, XtPointer client_data, XtPointer call_data)
 {
      int keepgoing;
      XEvent tempevent;
@@ -325,9 +321,6 @@ String trans =
  */
 
 String fallback_resources[] = {
-     "*textDisplay*fontList: *-courier-bold-r-normal-*-12-*-*-*-*-*-*-1",
-     "*scroll_list*fontList: *-courier-bold-r-normal-*-12-*-*-*-*-*-*-1",
-     "*fontList: *-helvetica-bold-r-normal-*-12-*-*-*-*-*-*-1,*-helvetica-bold-r-normal-*-14-*-*-*-*-*-*-1=Title,*-helvetica-bold-r-normal-*-12-*-*-*-*-*-*-1=Body,*-courier-bold-r-normal-*-12-*-*-*-*-*-*-1=Text",
      NULL
 };
 
@@ -335,9 +328,7 @@ String fallback_resources[] = {
 #include <X11/extensions/multibuf.h>
 #endif
 
-main(argc, argv)
-  int argc;
-  char *argv[];
+int main(int argc, char *argv[])
 {
      int major, minor;
      Widget        menubar, menu;
@@ -357,6 +348,29 @@ main(argc, argv)
      int           port;
      
      
+     char *saved_home = getenv("HOME");
+
+     /* Auto-set DISPLAY for XQuartz if not set */
+     if (!getenv("DISPLAY")) {
+         setenv("DISPLAY", ":0", 1);
+     }
+
+     /* Set Hershey font path for .app bundle */
+     if (!getenv("HFONTLIB")) {
+         char execpath[1024];
+         uint32_t size = sizeof(execpath);
+         if (_NSGetExecutablePath(execpath, &size) == 0) {
+             /* execpath = .../GopherVR.app/Contents/MacOS/gophervr */
+             char *match = strstr(execpath, ".app/Contents/MacOS/gophervr");
+             if (match) {
+                 match[4] = '\0';  /* truncate to .../GopherVR.app */
+                 char fontpath[1024];
+                 snprintf(fontpath, sizeof(fontpath), "%s/Contents/Resources/fonts", execpath);
+                 setenv("HFONTLIB", fontpath, 1);
+             }
+         }
+     }
+
      /* init locale */
      setlocale( LC_ALL, "" );
      
@@ -372,13 +386,14 @@ main(argc, argv)
 		   XtNtitle, "Gopher VR",
 		   NULL);
 
-     if(getenv("HOME") &&
-	strlen(getenv("HOME")) < 127) {
+     if(saved_home &&
+	strlen(saved_home) < 127) {
 		FILE *fpos;
 		char fnam[255];
 		int x, y;
-		
-		sprintf(fnam, "%s/.gophervrwindows", getenv("HOME"));
+		char *home = saved_home;
+		if (home) {
+		sprintf(fnam, "%s/.gophervrwindows", home);
 		if(fpos = fopen(fnam, "r")) {
 			fscanf(fpos, "%i %i %i %i %i %i %i %i",
 				&x, &y, &canvas_w, &canvas_h,
@@ -388,8 +403,9 @@ main(argc, argv)
 			XtVaSetValues(top,
 				XtNx, x, XtNy, y, NULL);
 		}
+		}
      }
-
+     
      dpy = XtDisplay(top);
 
      if (argc < 2) {
@@ -736,8 +752,7 @@ ShiftKeyDown(XEvent *event)
 }
 
 static boolean
-ControlKeyDown(event)
-  XEvent *event;
+ControlKeyDown(XEvent *event)
 {
      XKeyEvent *thekey;
      KeySym keysym;
@@ -761,8 +776,7 @@ ControlKeyDown(event)
 
 
 static boolean
-MetaKeyDown(event)
-  XEvent *event;
+MetaKeyDown(XEvent *event)
 {
      XKeyEvent *thekey;
      KeySym keysym;
@@ -791,11 +805,7 @@ MetaKeyDown(event)
 	that sort into middle button presses. */
 
 void
-mousemove_cb(widget, event, args, num_args)
-  Widget widget;
-  XEvent *event;
-  String *args;
-  int    *num_args;
+mousemove_cb(Widget widget, XEvent *event, String *args, int *num_args)
 {
      XButtonEvent *bevent;
      XWindowAttributes wnattr;
@@ -953,11 +963,7 @@ XmStringCreateLtoR(statusline, "Body");
 
 /* We don't use this right now. */
 void
-mouserotate_cb(widget, event, args, num_args)
-  Widget widget;
-  XEvent *event;
-  String *args;
-  int    *num_args;
+mouserotate_cb(Widget widget, XEvent *event, String *args, int *num_args)
 {
      XButtonEvent *bevent;
      short        x, y;
@@ -997,11 +1003,7 @@ mouserotate_cb(widget, event, args, num_args)
 
 
 void
-mouseselect(widget, event, args, num_args)
-  Widget widget;
-  XEvent *event;
-  String *args;
-  int    *num_args;
+mouseselect(Widget widget, XEvent *event, String *args, int *num_args)
 {
      XButtonEvent *bevent;
      int        x, y;
@@ -1025,9 +1027,7 @@ mouseselect(widget, event, args, num_args)
 }
 
 void
-jumpto(x,y)
-  int x;
-  int y;
+jumpto(int x, int y)
 {
 
      sceneclick(oursceneid, x,y);

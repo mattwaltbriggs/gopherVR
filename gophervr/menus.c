@@ -6,7 +6,7 @@
 #include "vogltools.h"
 #include "gophwin.h"
 
-void Edit_Copy_CB();
+void Edit_Copy_CB(Widget, XtPointer, XtPointer);
 
 
 
@@ -122,9 +122,9 @@ BuildMenu(Widget   parent,
     return menu_type == XmMENU_POPUP ? menu : cascade;
 }
 
-extern void MenuOpenURL();
-extern void MenuReload();
-extern void MenuShowGopherMenu();
+extern void MenuOpenURL(void);
+extern void MenuReload(void);
+extern void MenuShowGopherMenu(void);
 
 static MenuItem FileMenuItems[] = {
 /* These don't work yet. -- Cameron */
@@ -193,14 +193,14 @@ static MenuItem HelpMenuItems[] = {
 NULL
 };
 
-extern void MenuOverview();
-extern void MenuJumpForward();
-extern void MenuJumpUp();
-extern void MenuSpinOut();
-extern void MenuSicko();
-extern void MenuInitialView();
-extern void MenuMoveUp();
-extern void MenuMoveDown();
+extern void MenuOverview(void);
+extern void MenuJumpForward(void);
+extern void MenuJumpUp(void);
+extern void MenuSpinOut(void);
+extern void MenuSicko(void);
+extern void MenuInitialView(void);
+extern void MenuMoveUp(void);
+extern void MenuMoveDown(void);
 
 static MenuItem NavigateItems[] = {
 {"Initial Viewpoint",  &xmPushButtonGadgetClass, 'I', "Alt<Key>I", "Alt-I", 

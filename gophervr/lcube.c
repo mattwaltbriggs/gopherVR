@@ -115,8 +115,8 @@ static long currentscene = 0;
    I'm keeping it more as a souvenir.
    -- Cameron */
 #if(0)
-static 
-bgntime()
+static void
+bgntime(void)
 {
      static int oldtime;
      static int frames = 0;

@@ -27,7 +27,7 @@ char *ScanWhiteSpace(char *line) {
      return(line);
 }
 
-ScanTokens(char* line, char **tokens) {
+void ScanTokens(char* line, char **tokens) {
      ;
 }
 

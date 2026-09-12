@@ -314,7 +314,8 @@ HiddenCursors(Boolean on)
 
 
 /**********************************************************************/
-AddInput(int fd, char *(proc)())
+void
+AddInput(int fd, char *(*proc)(int, XtPointer))
 {
      XtAppAddInput(app, fd, (XtPointer)XtInputReadMask, proc, NULL);
 }
@@ -328,7 +329,7 @@ AddInput(int fd, char *(proc)())
 #include "helpdiag.h"
 
 void
-PromptFor(char *txt, void *(function)())
+PromptFor(char *txt, void *(*function)(void))
 {
      static Widget prompt;
      Arg args[3];
@@ -421,7 +422,6 @@ filepicker( char *suggestion, void *gs)
     Widget dialog, Wig_filetxt, Wig_filtxt;
     XmString filemask;
 #ifndef __sgi
-    extern void exit();
 #endif
     Arg args[5];   
     int n = 0;

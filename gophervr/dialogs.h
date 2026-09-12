@@ -10,7 +10,7 @@ extern	void	V_OpenSessionURL( char *aCh_title, char *aCh_urltxt );
 
 typedef struct {
     char *label;
-    void (*callback)();
+    void (*callback)(Widget, XtPointer, XtPointer);
     XtPointer   data;
 } ActionAreaItem;
 
@@ -39,13 +39,13 @@ typedef struct tagTwoTextDesc
 {
 	char	*aCh_string1;
 	char	*aCh_string2;
-	void	(*f_V_callback)();
+	void	(*f_V_callback)(Widget, XtPointer, XtPointer);
 } TWOTEXTDESC, *P_TWOTEXTDESC, **PP_TWOTEXTDESC;
 
 typedef struct tagOneTextDesc
 {
 	char    *aCh_string;
-	void    (*f_V_callback)();
+	void    (*f_V_callback)(Widget, XtPointer, XtPointer);
 } ONETEXTDESC, *P_ONETEXTDESC, **PP_ONETEXTDESC;
 
 
@@ -55,9 +55,9 @@ V_OpenGeneralDiag( Widget widget, XtPointer client_data, XtPointer call_data );
 void
 V_OpenTwoEntryDiag( Widget widget, XtPointer client_data, XtPointer call_data );
 void
-CreateActionArea( P_ONETEXTW pOtw_data, void (*f_V_callback)() );
+CreateActionArea( P_ONETEXTW pOtw_data, void (*f_V_callback)(Widget, XtPointer, XtPointer) );
 void
-CreateActionArea2( P_TWOTEXTW pTtw_data, void (*f_V_callback)() );
+CreateActionArea2( P_TWOTEXTW pTtw_data, void (*f_V_callback)(Widget, XtPointer, XtPointer) );
 void
 V_DiagClose1( Widget w, XtPointer client_data, XtPointer call_data );
 void

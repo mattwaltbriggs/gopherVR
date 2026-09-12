@@ -8,6 +8,6 @@ void EyeInitialPoint( void );
 void JumpOutofView(void (*displayfunc)());
 void JumpIntoView(void (*displayfunc)());
 void MotionSickness(void (*displayfunc)());
-void makegroundplane();
-void drawscene();
+void makegroundplane(void);
+void drawscene(void);
 void EyeLocationUp(int);

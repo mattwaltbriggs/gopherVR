@@ -1,0 +1,31 @@
+CC		= clang
+CFLAGS		= -g -O2 -I../gopher -iquote ../gopher/object -I../libvogl/src \
+		  -I/opt/X11/include -I/opt/homebrew/include \
+		  -I$(shell brew --prefix openmotif)/include \
+		  -Wno-implicit-function-declaration -Wno-return-type \
+		  -Wno-int-conversion -Wno-incompatible-pointer-types \
+		  -Wno-implicit-int -Wno-deprecated-non-prototype -Wno-parentheses \
+		  -Wno-pointer-sign -Wno-nonportable-include-path
+LDOPTIONS	=
+LDLIBS		= -L$(shell brew --prefix openmotif)/lib -lXm \
+		  -L$(shell brew --prefix libxt)/lib -lXt \
+		  -L/opt/X11/lib -lX11
+EXTRA_LOAD_FLAGS=
+RM		= rm
+CP = cp
+
+BURROWOBJS = burrower.o menus.o lcube.o globals.o text.o \
+             gopherto3d.o motiftools.o dialogs.o helpdiag.o \
+             vogltools.o parse.o parse_geom.o parse_nff.o error.o \
+             compat_regex.o gophwin.o gif.o \
+             ../lib/libvogl.a    ../lib/libhershey.a ../lib/libtracker.a \
+             ../gopher/object/libgopher.a
+
+all: gophervr
+
+gophervr: $(BURROWOBJS)
+	$(RM) -f $@
+	$(CC) $(CFLAGS) -o $@ $(BURROWOBJS) $(LDOPTIONS) $(LDLIBS) -lm $(EXTRA_LOAD_FLAGS)
+
+clean:
+	$(RM) -f gophervr gophervr.gz *.o

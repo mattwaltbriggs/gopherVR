@@ -47,9 +47,7 @@ static Widget	infoDialog;
    User has read and accepted the error */
 
 static void
-errorOkProc(w, client_data, call_data)
-Widget		w;
-XtPointer	client_data, call_data;
+errorOkProc(Widget w, XtPointer client_data, XtPointer call_data)
 {
 	XtUnmanageChild(errorDialog);
 
@@ -61,9 +59,7 @@ XtPointer	client_data, call_data;
    Fatal errors exit here */
 
 static void
-errorExitProc(w, client_data, call_data)
-Widget		w;
-XtPointer	client_data, call_data;
+errorExitProc(Widget w, XtPointer client_data, XtPointer call_data)
 {
 	XtUnmanageChild(errorDialog);
 
@@ -75,8 +71,7 @@ XtPointer	client_data, call_data;
    create popup dialog for reporting errors */
 
 void
-makeErrorDialog(top)
-Widget	top;
+makeErrorDialog(Widget top)
 {
 	Arg		args[3];
 	Cardinal	n = 0;
@@ -99,9 +94,7 @@ Widget	top;
    enable popup dialog for saving files */
 
 void
-displayError(errorText, fatal)
-char	*errorText;
-Boolean	fatal;
+displayError(char *errorText, int fatal)
 {
 	XtVaSetValues(errorDialog,
 		      XmNmessageString,
@@ -123,9 +116,7 @@ Boolean	fatal;
    User has read and accepted the information */
 
 static void
-infoOkProc(w, client_data, call_data)
-Widget		w;
-XtPointer	client_data, call_data;
+infoOkProc(Widget w, XtPointer client_data, XtPointer call_data)
 {
 	XtUnmanageChild(infoDialog);
 
@@ -137,8 +128,7 @@ XtPointer	client_data, call_data;
    create popup dialog for reporting infos */
 
 void
-makeInfoDialog(top)
-Widget	top;
+makeInfoDialog(Widget top)
 {
 	Widget		infoOkButton;
 	Arg		args[3];
@@ -163,8 +153,7 @@ Widget	top;
    enable popup dialog for saving files */
 
 void
-displayInfo(infoText)
-char	*infoText;
+displayInfo(char *infoText)
 {
 	XtVaSetValues(infoDialog, 
 		      XmNmessageString, 

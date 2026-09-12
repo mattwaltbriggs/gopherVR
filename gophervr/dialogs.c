@@ -17,6 +17,7 @@
 
 
 extern Widget top;
+extern void showError(char *parm);
 
 
 TWOTEXTDESC g_rTtd_list [4] = 
@@ -218,7 +219,7 @@ V_OpenTwoEntryDiag( Widget widget, XtPointer client_data, XtPointer call_data )
 	 * Create the Action Area for a 1 text widget Dialog Box
 	 */
 void
-CreateActionArea(P_ONETEXTW pOtw_data, void (*f_V_callback)() )
+CreateActionArea(P_ONETEXTW pOtw_data, void (*f_V_callback)(Widget, XtPointer, XtPointer) )
 {
     Widget widget;
     int i;
@@ -259,7 +260,7 @@ CreateActionArea(P_ONETEXTW pOtw_data, void (*f_V_callback)() )
      * Create the Action Area for a 2 text widget Dialog Box
      */
 void
-CreateActionArea2( P_TWOTEXTW pTtw_data, void (*f_V_callback)() ) 
+CreateActionArea2( P_TWOTEXTW pTtw_data, void (*f_V_callback)(Widget, XtPointer, XtPointer) ) 
 {
     Widget widget;
     int i;

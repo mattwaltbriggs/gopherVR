@@ -51,7 +51,7 @@
 
 #define  REGEX_CODEIT    /* only include sysv regex code once.. */
 #include "config.h"
-#include "Regex.h"
+#include "GRegex.h"
 #include "Malloc.h"
 
 #include <regex.h>

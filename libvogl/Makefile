@@ -36,7 +36,8 @@ RANLIB = ranlib
 #
 #Different C compilers
 GCC 		= gcc -ansi -pedantic -Wall -Wstrict-prototypes
-OSXGCC		= $(GCC) -mmacosx-version-min=10.4 -arch i386
+OSXGCC		= $(GCC)
+OSXARM64GCC	= clang -arch arm64 -Wno-implicit-int -Wno-implicit-function-declaration -Wno-incompatible-function-pointer-types -Wno-return-type
 UOSXGCC		= $(GCC) -force_cpusubtype_ALL -mmacosx-version-min=10.4 -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk
 SUNPRO_CC	= acc
 AIXCC		= xlc
@@ -76,7 +77,7 @@ AIX3_OPT		= -O3 -qnostrict -Q -qansialias -qro
 IRIX5_OPT		= -O2 -g3
 SOL2_OPT		= -dalign -xO4 -xstrconst -I/usr/openwin/include -DSYS5
 OSF2_OPT		= -g3  -O2 -check 
-MACOSX_OPT		= -g -O3 -fomit-frame-pointer -finline-functions -fexpensive-optimizations -DNO_MULTIBUF -I/opt/X11/include
+MACOSX_OPT		= -g -O3 -fomit-frame-pointer -finline-functions -fexpensive-optimizations -DNO_MULTIBUF -I/opt/X11/include -I/opt/homebrew/include
 ######################################################################
 
 
@@ -181,6 +182,17 @@ umacosx:
 
 	cd hershey/src; $(MAKE) $(MFLAGS) -f Makefile \
 			CC="$(UOSXGCC)" LIBS="$(LIBS)" \
+			FONTLIB="$(FONTLIB)" \
+			MCFLAGS="$(MACOSX_FLOAT) $(MACOSX_OPT)"
+
+######################################################################
+macosx-arm64:
+	cd src; $(MAKE) $(MFLAGS) -f Makefile \
+	CC="$(OSXARM64GCC)" $(MAKEDEFS) \
+	MCFLAGS="$(MACOSX_FLOAT) $(MACOSX_OPT)"
+
+	cd hershey/src; $(MAKE) $(MFLAGS) -f Makefile \
+			CC="$(OSXARM64GCC)" LIBS="$(LIBS)" \
 			FONTLIB="$(FONTLIB)" \
 			MCFLAGS="$(MACOSX_FLOAT) $(MACOSX_OPT)"
 

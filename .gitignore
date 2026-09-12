@@ -1,0 +1,18 @@
+# Build artifacts
+*.o
+*.a
+gophervr/gophervr
+gophervr/gophervr_dbg
+gophervr/gophervr_debug
+lib/libvogl.a
+lib/libhershey.a
+lib/libtracker.a
+lib/hershey/
+
+# macOS
+.DS_Store
+*.tmp
+*.o.tmp
+
+# App bundle (built separately)
+GopherVR.app/

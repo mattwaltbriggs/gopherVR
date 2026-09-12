@@ -159,7 +159,7 @@
 #if defined(__APPLE__) || defined(__CYGWIN__)
 /* this has to be explicit because HFS+ and FAT/NFS
    are case-insensitive by default */
-#include "/usr/include/regex.h"
+#include <regex.h>
 #endif
 #endif
 
