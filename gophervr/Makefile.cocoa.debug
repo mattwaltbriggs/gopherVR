@@ -1,0 +1,71 @@
+# Makefile for GopherVR Cocoa (macOS native, no X11/Motif)
+#
+# Usage:
+#   make -f Makefile.cocoa
+#   make -f Makefile.cocoa clean
+
+CC		= clang
+OBJCC		= clang
+
+# Cocoa flags - no X11, no Motif
+CFLAGS		= -g -O0 -I../gopher -iquote ../gopher/object -I../libvogl/src \
+		  -Wno-implicit-function-declaration -Wno-return-type \
+		  -Wno-int-conversion -Wno-incompatible-pointer-types \
+		  -Wno-implicit-int -Wno-deprecated-non-prototype -Wno-parentheses \
+		  -Wno-pointer-sign -Wno-nonportable-include-path \
+		  -DTARGET_API_MAC_OSX=1
+
+OBJCFLAGS	= $(CFLAGS) -fobjc-arc
+
+# Cocoa frameworks (no X11, no Motif)
+FRAMEWORKS	= -framework Cocoa -framework CoreGraphics -framework ApplicationServices
+LDFLAGS		=
+
+RM		= rm
+CP		= cp
+
+# Source files - C files that DON'T use Motif/X11
+C_SRCS		= lcube.c globals.c gopherto3d.c parse.c parse_geom.c parse_nff.c \
+		  compat_regex.c gif.c vogltools.c
+
+# Source files - need stub replacement (Motif functions removed)
+STUB_SRCS	= stub_menus.c stub_text.c stub_motiftools.c \
+		  stub_dialogs.c stub_helpdiag.c stub_error.c stub_burrower.c
+
+# Objective-C files (new Cocoa code)
+OBJC_SRCS	= main.m AppDelegate.m gophwin_cocoa.m cocoa_dialogs.m
+
+# All object files
+C_OBJS		= $(C_SRCS:.c=.cocoa.o)
+STUB_OBJS	= $(STUB_SRCS:.c=.cocoa.o)
+OBJC_OBJS	= $(OBJC_SRCS:.m=.cocoa.o)
+
+# Library objects
+VOGL_OBJS	= ../lib/libvogl.a
+HERSHEY_OBJS	= ../lib/libhershey.a
+TRACKER_OBJS	= ../lib/libtracker.a
+GOPHER_OBJS	= ../gopher/object/libgopher.a
+
+ALL_OBJS	= $(C_OBJS) $(STUB_OBJS) $(OBJC_OBJS)
+
+all: gophervr-cocoa
+
+gophervr-cocoa: $(ALL_OBJS)
+	$(RM) -f $@
+	$(OBJCC) $(OBJCFLAGS) -o $@ $(ALL_OBJS) $(VOGL_OBJS) $(HERSHEY_OBJS) \
+		$(TRACKER_OBJS) $(GOPHER_OBJS) $(FRAMEWORKS) $(LDFLAGS) -lm
+
+# Compile C sources
+%.cocoa.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+# Compile stub sources
+%.cocoa.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+# Compile Objective-C sources
+%.cocoa.o: %.m
+	$(OBJCC) $(OBJCFLAGS) -c -o $@ $<
+
+clean:
+	$(RM) -f gophervr-cocoa *.cocoa.o

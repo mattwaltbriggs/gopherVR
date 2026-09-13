@@ -22,6 +22,10 @@
 #include "MacII.h"
 #endif
 
+#ifdef COCOA
+extern int _Cocoa_devcpy(void);
+#endif
+
 
 struct vdev	vdevice;
 
@@ -131,6 +135,11 @@ static void getdevice(char *device)
 #ifdef PIXRECT
 	if (strncmp(device, "pixrect", 7) == 0)
 		_PIXRECT_devcpy();
+	else
+#endif
+#ifdef COCOA
+	if (strncmp(device, "Cocoa", 5) == 0)
+		_Cocoa_devcpy();
 	else
 #endif
 #ifdef X11

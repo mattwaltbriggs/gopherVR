@@ -1,0 +1,30 @@
+CC = clang
+OBJCC = clang
+CFLAGS = -g -O0 -fsanitize=address -I../gopher -iquote ../gopher/object -I../libvogl/src \
+	-Wno-implicit-function-declaration -Wno-return-type \
+	-Wno-int-conversion -Wno-incompatible-pointer-types \
+	-Wno-implicit-int -Wno-deprecated-non-prototype -Wno-parentheses \
+	-Wno-pointer-sign -Wno-nonportable-include-path \
+	-DTARGET_API_MAC_OSX=1
+OBJCFLAGS = $(CFLAGS) -fobjc-arc
+FRAMEWORKS = -framework Cocoa -framework CoreGraphics -framework ApplicationServices -fsanitize=address
+C_SRCS = lcube.c globals.c gopherto3d.c parse.c parse_geom.c parse_nff.c \
+	compat_regex.c gif.c vogltools.c
+STUB_SRCS = stub_menus.c stub_text.c stub_motiftools.c \
+	stub_dialogs.c stub_helpdiag.c stub_error.c stub_burrower.c
+OBJC_SRCS = main.m AppDelegate.m gophwin_cocoa.m cocoa_dialogs.m
+C_OBJS = $(C_SRCS:.c=.cocoa.o)
+STUB_OBJS = $(STUB_SRCS:.c=.cocoa.o)
+OBJC_OBJS = $(OBJC_SRCS:.m=.cocoa.o)
+ALL_OBJS = $(C_OBJS) $(STUB_OBJS) $(OBJC_OBJS)
+all: gophervr-cocoa
+gophervr-cocoa: $(ALL_OBJS)
+	rm -f $@
+	$(OBJCC) $(OBJCFLAGS) -o $@ $(ALL_OBJS) ../lib/libvogl.a ../lib/libhershey.a \
+		../lib/libtracker.a ../gopher/object/libgopher.a $(FRAMEWORKS) -lm
+%.cocoa.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+%.cocoa.o: %.m
+	$(OBJCC) $(OBJCFLAGS) -c -o $@ $<
+clean:
+	rm -f gophervr-cocoa *.cocoa.o

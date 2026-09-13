@@ -1,0 +1,45 @@
+# Makefile for libvogl with Cocoa driver (no X11)
+#
+# Usage:
+#   make -f Makefile.cocoa
+#   make -f Makefile.cocoa clean
+
+CC = clang
+OBJCC = clang
+
+LIB = libvogl.a
+
+MCFLAGS = -g -O2
+
+CSRC = arcs.c attr.c buffer.c clip.c curves.c draw.c drivers.c \
+	viewing.c viewp.c mapping.c matrix.c move.c objects.c patches.c \
+	points.c polygons.c rect.c tensor.c text.c newtokens.c trans.c \
+	scale.c getgp.c valloc.c yobbarays.c pref.c vcalls.c \
+	queue.c lines.c bsp.c minv4.c geometry.c shading.c eyemotion.c \
+	render_dir.c render_document.c render_kiosk.c render_search.c \
+	render_telnet.c render_sound.c shading_d.c
+
+OBJS = $(CSRC:.c=.cocoa.o) cocoa.o
+
+CFLAGS = $(MCFLAGS) -Isrc -Ihershey/src -DCOCOA \
+	-Wno-implicit-function-declaration -Wno-return-type \
+	-Wno-int-conversion -Wno-incompatible-pointer-types \
+	-Wno-implicit-int -Wno-deprecated-non-prototype
+
+OBJCFLAGS = $(CFLAGS) -fobjc-arc
+
+all: ../lib/$(LIB)
+
+../lib/$(LIB): $(OBJS)
+	rm -f $@
+	ar rcv $@ $(OBJS)
+	ranlib $@ || true
+
+%.cocoa.o: src/%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+cocoa.o: drivers/cocoa.m
+	$(OBJCC) $(CFLAGS) -c -o $@ drivers/cocoa.m
+
+clean:
+	rm -f src/*.cocoa.o cocoa.o core
