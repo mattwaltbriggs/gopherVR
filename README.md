@@ -4,6 +4,8 @@ A macOS (Apple Silicon) port of [GopherVR](https://github.com/michael-lazar/goph
 
 GopherVR renders [Gopher](https://en.wikipedia.org/wiki/Gopher_protocol) space as a navigable 3D environment using X11/Motif. This fork compiles and runs natively on Apple Silicon Macs with [XQuartz](https://www.xquartz.org/) and [OpenMotif](https://motif.ics.com/).
 
+> **Native Cocoa port available!** See [GopherVR-Cocoa](https://github.com/mattwaltbriggs/GopherVR-Cocoa) — runs natively on macOS without X11 or Motif. Full AppKit/Cocoa replacement with text windows, search dialogs, and a proper .app bundle.
+
 ## What was done
 
 This port required resolving several issues that prevented the original 1990s-era codebase from compiling on modern macOS with Apple Silicon:
